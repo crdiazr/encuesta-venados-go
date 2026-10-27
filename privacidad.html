@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aviso de privacidad · {sitio}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="css/estilos.css">
+  <style>.legal{max-width:720px;padding:32px 0 48px}.legal h1{font-size:30px;letter-spacing:-.02em;margin:0 0 8px}.legal h2{font-size:18px;margin:28px 0 6px}.legal p,.legal li{color:var(--texto-2)}</style>
+</head>
+<body>
+  <header class="encabezado"><div class="contenedor"><a class="marca" href="./"><span class="marca-icono" aria-hidden="true"></span><span data-config="NOMBRE_SITIO">Vota por tu favorito</span></a></div></header>
+  <main class="contenedor legal">
+    <h1>Aviso de privacidad</h1>
+    <p>Este sitio es un proyecto personal y sin fines de lucro. Aquí te explicamos, en corto, qué datos pedimos y qué hacemos con ellos.</p>
+
+    <h2>Qué datos pedimos</h2>
+    <p>Tu nombre de usuario de Pokémon GO, tu dirección de correo electrónico y el Pokémon por el que votaste.</p>
+
+    <h2>Para qué los usamos</h2>
+    <p>Únicamente para confirmar que el correo es tuyo y que cada persona vote una sola vez. No enviamos publicidad, no vendemos ni compartimos tus datos; los administradores de la comunidad Venados Go ven los resultados como totales.</p>
+
+    <h2>Dónde se guardan</h2>
+    <p>En una base de datos de Supabase, un servicio externo de almacenamiento. El código que se te envía por correo sale a través de un servicio de envío de correos.</p>
+
+    <h2>Cuánto tiempo</h2>
+    <p>Mientras dure la votación. Al terminar, los datos se pueden borrar.</p>
+
+    <h2>Tus derechos</h2>
+    <p>Puedes pedir ver, corregir o borrar tus datos, u oponerte a su uso, escribiendo a <a id="contacto" href="#">el administrador del sitio</a>. Si borras tu registro, tu voto deja de contarse.</p>
+
+    <p style="margin-top:32px"><a href="./">← Volver a la votación</a></p>
+  </main>
+  <footer class="pie"><div class="contenedor"><span data-config="NOTA_DERECHOS"></span></div></footer>
+  <script src="config.js"></script>
+  <script>
+    (function () {
+      var C = window.CONFIG || {};
+      document.querySelectorAll("[data-config]").forEach(function (el) { if (C[el.dataset.config]) el.textContent = C[el.dataset.config]; });
+      if (C.NOMBRE_SITIO) document.title = document.title.replace("{sitio}", C.NOMBRE_SITIO);
+      if (C.COLOR) document.documentElement.style.setProperty("--acento", C.COLOR);
+      var a = document.getElementById("contacto");
+      if (C.CORREO_CONTACTO) { a.href = "mailto:" + C.CORREO_CONTACTO; a.textContent = C.CORREO_CONTACTO; }
+      else { a.removeAttribute("href"); }
+    })();
+  </script>
+</body>
+</html>

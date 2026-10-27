@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Administración · {sitio}</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23d1342a' stroke='%23111' stroke-width='2'/%3E%3Cpath d='M2 16h28v0a14 14 0 0 1-28 0z' fill='%23fff' stroke='%23111' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%23fff' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="marca" href="./"><span class="marca-icono" aria-hidden="true"></span><span data-config="NOMBRE_SITIO">Vota por tu favorito</span></a>
+      <span id="sesion-correo" style="font-size:14px;color:var(--texto-3)"></span>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <div id="aviso-config" class="aviso" style="margin-top:24px" hidden></div>
+
+    <!-- Inicio de sesión -->
+    <section id="vista-login" class="tarjeta-login" hidden>
+      <form id="form-correo" novalidate>
+        <h1>Panel de administración</h1>
+        <p>Entra con tu correo de administrador. Te enviaremos un código; no necesitas contraseña.</p>
+        <div id="msg-login" class="mensaje" role="alert" hidden></div>
+        <div class="campo">
+          <label for="login-correo">Correo electrónico</label>
+          <input id="login-correo" class="entrada" type="email" inputmode="email" autocomplete="email" required>
+        </div>
+        <button class="boton ancho" id="btn-login" type="submit">Enviarme el código</button>
+      </form>
+      <form id="form-codigo" novalidate hidden>
+        <h1>Revisa tu correo</h1>
+        <p>Escribe el código que enviamos a <strong id="login-enviado"></strong>.</p>
+        <div id="msg-codigo" class="mensaje" role="alert" hidden></div>
+        <div class="campo">
+          <label for="login-codigo">Código</label>
+          <input id="login-codigo" class="entrada codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="10" required>
+        </div>
+        <button class="boton ancho" id="btn-verificar" type="submit">Entrar</button>
+        <div class="fila-enlaces"><button type="button" class="enlace-boton" id="btn-otro-correo">Usar otro correo</button></div>
+      </form>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="vista-panel" class="panel" hidden>
+      <div class="panel-cabecera">
+        <div>
+          <h1>Resultados</h1>
+          <p id="actualizado" aria-live="polite"></p>
+        </div>
+        <div class="grupo-botones">
+          <button class="boton secundario pequeno" id="btn-actualizar">Actualizar</button>
+          <button class="boton fantasma pequeno" id="btn-salir">Cerrar sesión</button>
+        </div>
+      </div>
+      <div id="msg-panel" class="mensaje" role="alert" hidden></div>
+
+      <div class="indicadores">
+        <div class="indicador principal"><div class="etiqueta">Total de votos</div><div class="valor" id="kpi-total">–</div><div class="detalle">Un voto por correo verificado</div></div>
+        <div class="indicador"><div class="etiqueta">Personajes con al menos un voto</div><div class="valor" id="kpi-personajes">–</div><div class="detalle" id="kpi-personajes-detalle"></div></div>
+        <div class="indicador"><div class="etiqueta">Último voto</div><div class="valor" id="kpi-ultimo" style="font-size:24px;margin-top:10px">–</div><div class="detalle" id="kpi-ultimo-detalle"></div></div>
+      </div>
+
+      <div class="columnas">
+        <section class="seccion">
+          <div class="seccion-cabecera"><div><h2 id="titulo-por-grupo">Votos por grupo</h2><p class="sub">Pasa el cursor sobre una barra para ver el porcentaje</p></div></div>
+          <ul id="barras-grupo" class="barras"></ul>
+        </section>
+
+        <section class="seccion">
+          <div class="seccion-cabecera"><div><h2>Administradores</h2><p class="sub">Pueden ver resultados y agregar a otros</p></div></div>
+          <form id="form-admin" class="form-linea" novalidate>
+            <label for="nuevo-admin" class="sr-only">Correo del nuevo administrador</label>
+            <input id="nuevo-admin" class="entrada" type="email" placeholder="correo@ejemplo.com" autocomplete="off">
+            <button class="boton" id="btn-agregar" type="submit">Agregar</button>
+          </form>
+          <div id="msg-admin" class="mensaje" role="alert" hidden></div>
+          <ul id="lista-admins" class="lista-admins"></ul>
+        </section>
+      </div>
+
+      <section class="seccion">
+        <div class="seccion-cabecera">
+          <div><h2>Ranking de personajes</h2><p class="sub" id="ranking-sub">Ordenado por número de votos</p></div>
+          <div class="grupo-botones" style="display:flex;gap:8px;flex-wrap:wrap">
+            <label for="filtro-grupo" class="sr-only">Filtrar ranking</label>
+            <select id="filtro-grupo" class="selector"><option value="">Todos</option></select>
+            <button class="boton secundario pequeno" id="btn-csv">Descargar CSV</button>
+          </div>
+        </div>
+        <div class="tabla-envoltura">
+          <table>
+            <thead><tr><th>#</th><th>Personaje</th><th id="th-grupo">Grupo</th><th class="num">Votos</th><th class="num">% del total</th></tr></thead>
+            <tbody id="tabla-ranking"></tbody>
+          </table>
+        </div>
+        <div class="fila-enlaces"><span></span><button type="button" class="enlace-boton" id="btn-mas" hidden>Mostrar más</button></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="pie"><div class="contenedor"><span data-config="NOTA_DERECHOS"></span><a href="./">Ir a la votación</a></div></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="js/comun.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

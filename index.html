@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{sitio}</title>
+  <meta name="description" content="Vota por tu personaje favorito.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23d1342a' stroke='%23111' stroke-width='2'/%3E%3Cpath d='M2 16h28v0a14 14 0 0 1-28 0z' fill='%23fff' stroke='%23111' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='4.5' fill='%23fff' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="marca" href="./"><span class="marca-icono" aria-hidden="true"></span><span data-config="NOMBRE_SITIO">Vota por tu favorito</span></a>
+    </div>
+  </header>
+
+  <main class="contenedor" id="principal">
+    <section class="portada">
+      <img class="logo" data-logo src="img/logo.webp" width="132" height="132" alt="Logotipo">
+      <div class="textos">
+        <h1 data-config="TITULO">Encuesta de la Comunidad de Venados Go</h1>
+        <p data-config="DESCRIPCION">Elige tu favorito y vota.</p>
+      </div>
+    </section>
+
+    <div id="aviso-config" class="aviso" hidden></div>
+    <div id="aviso-ya-voto" class="aviso" hidden></div>
+
+    <div class="herramientas">
+      <div class="busqueda">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label for="buscar" class="sr-only">Buscar por nombre o número</label>
+        <input id="buscar" class="entrada" type="search" placeholder="Buscar por nombre o número" autocomplete="off">
+      </div>
+      <div id="grupos" class="chips" role="tablist" aria-label="Grupos"></div>
+    </div>
+
+    <p id="estado-lista" class="estado-lista" aria-live="polite"></p>
+    <div id="rejilla" class="rejilla"></div>
+  </main>
+
+  <div id="barra-seleccion" class="barra-seleccion" hidden>
+    <img id="sel-img" alt="">
+    <div class="texto"><small>Tu elección</small><strong id="sel-nombre"></strong></div>
+    <button id="btn-votar" class="boton">Votar</button>
+  </div>
+
+  <dialog id="dialogo" aria-labelledby="dialogo-titulo">
+    <!-- Paso 1: datos -->
+    <form id="paso-datos" class="dialogo-cuerpo" novalidate>
+      <h2 id="dialogo-titulo">Confirma tu voto</h2>
+      <p>Te enviaremos un código a tu correo para confirmar que es tuyo. Solo se permite un voto por entrenador.</p>
+      <div class="elegido"><img id="dlg-img" alt=""><div><small>Vas a votar por</small><strong id="dlg-nombre"></strong></div></div>
+      <div id="msg-datos" class="mensaje" role="alert" hidden></div>
+      <div class="campo">
+        <label for="usuario" data-config="ETIQUETA_USUARIO">Usuario de Pokémon GO</label>
+        <input id="usuario" class="entrada" maxlength="40" autocomplete="nickname" required>
+      </div>
+      <div class="campo">
+        <label for="correo">Correo electrónico</label>
+        <input id="correo" class="entrada" type="email" inputmode="email" autocomplete="email" required>
+      </div>
+      <label class="casilla"><input id="acepto" type="checkbox"> <span>Acepto que mi correo se use solo para verificar mi voto. <a href="privacidad.html" target="_blank" rel="noopener">Aviso de privacidad</a></span></label>
+      <div class="acciones">
+        <button class="boton ancho" id="btn-enviar" type="submit">Enviarme el código</button>
+        <button class="boton fantasma ancho" type="button" data-cerrar>Cancelar</button>
+      </div>
+    </form>
+
+    <!-- Paso 2: código -->
+    <form id="paso-codigo" class="dialogo-cuerpo" novalidate hidden>
+      <h2>Revisa tu correo</h2>
+      <p>Escribe el código que enviamos a <strong id="correo-enviado"></strong>. Si no lo ves, busca en spam o promociones.</p>
+      <div id="msg-codigo" class="mensaje" role="alert" hidden></div>
+      <div class="campo">
+        <label for="codigo">Código de verificación</label>
+        <input id="codigo" class="entrada codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="10" required>
+      </div>
+      <div class="acciones">
+        <button class="boton ancho" id="btn-confirmar" type="submit">Confirmar mi voto</button>
+      </div>
+      <div class="fila-enlaces">
+        <button type="button" class="enlace-boton" id="btn-cambiar">Cambiar correo</button>
+        <button type="button" class="enlace-boton" id="btn-reenviar" disabled>Reenviar código</button>
+      </div>
+    </form>
+
+    <!-- Paso 3: resultado -->
+    <div id="paso-resultado" class="dialogo-cuerpo resultado" hidden>
+      <img id="res-img" alt="">
+      <h2 id="res-titulo"></h2>
+      <p id="res-texto"></p>
+      <button class="boton ancho" type="button" data-cerrar>Listo</button>
+    </div>
+  </dialog>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span data-config="NOTA_DERECHOS"></span>
+      <span><a href="privacidad.html">Aviso de privacidad</a> · <a href="admin.html">Administración</a></span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="js/comun.js"></script>
+  <script src="js/votar.js"></script>
+</body>
+</html>

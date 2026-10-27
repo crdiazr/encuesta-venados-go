@@ -1,0 +1,4 @@
+grupo_id,nombre,imagen_url,numero
+1,Personaje A,https://ejemplo.com/a.png,1
+1,Personaje B,https://ejemplo.com/b.png,2
+2,Personaje C,img/personaje-c.png,3
