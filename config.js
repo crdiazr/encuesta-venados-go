@@ -4,8 +4,8 @@
 // =====================================================================
 window.CONFIG = {
   // 1) De Supabase > Project Settings > API Keys / Data API. Ver README, paso 2.6.
-  SUPABASE_URL: "PEGA_AQUI_TU_PROJECT_URL",          // se ve como https://abcdefgh.supabase.co
-  SUPABASE_KEY: "PEGA_AQUI_TU_PUBLISHABLE_KEY",      // empieza con sb_publishable_ (o la "anon" key)
+  SUPABASE_URL: "https://lhootucrflcafdcdorrb.supabase.co/rest/v1/",          // se ve como https://abcdefgh.supabase.co
+  SUPABASE_KEY: "sb_publishable_N3GT4bjob2PMZ64WTAKBnw_RfK4BF-g",      // empieza con sb_publishable_ (o la "anon" key)
 
   // 2) Textos del sitio. Cámbialos cuando uses otros personajes.
   NOMBRE_SITIO: "Vota por tu favorito",
